@@ -18,7 +18,7 @@ class Book(Base):
     time_created = sa.Column(sa.DateTime(
         timezone=True), server_default=func.now())
 
-    def __repr__(self):
-        return "title: {}, by author: {}".format(self.title, self.author)
+    # def __repr__(self):
+    #     return "title: {}, by author: {}".format(self.title, self.author)
 
 Base.metadata.create_all(engine, Base.metadata.tables.values(),checkfirst=True)
