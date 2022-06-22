@@ -51,10 +51,12 @@ def get_all_books(db: Session):
     return books
 
 def get_specific_book(book_id: int, db: Session):
-    book = get_book_from_cache(book_id)
-
-    if book is None:
-        book = db.query(models.Book).filter(models.Book.id == book_id).all()
+    book_from_cache = get_book_from_cache(book_id)
+    print("book from cache:", book_from_cache)
+    if book_from_cache is None:
+        book_from_db = db.query(models.Book).filter(models.Book.id == book_id).all()
+        print("book_from_db: ", book_from_db)
+        book = set_book_in_cache(book_id, book_from_db)
 
     return book
 
