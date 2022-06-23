@@ -21,4 +21,4 @@ class Book(Base):
     # def __repr__(self):
     #     return "title: {}, by author: {}".format(self.title, self.author)
 
-Base.metadata.create_all(engine, Base.metadata.tables.values(),checkfirst=True)
+# Base.metadata.create_all(engine, Base.metadata.tables.values(),checkfirst=True)
