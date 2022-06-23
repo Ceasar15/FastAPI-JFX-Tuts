@@ -44,7 +44,8 @@ def get_book_from_cache(key=0):
     else:
         listed_result = []
         for new_key in client.scan_iter():
-            listed_result.append(json.loads(client.get(new_key).decode('utf-8')))
+            listed_result.append(json.loads(
+                client.get(new_key).decode('utf-8')))
         print("result from cache")
         return listed_result
 
@@ -66,18 +67,22 @@ async def set_book_in_cache(book: models.Book) -> bool:
     return cached_book
 
 
+async def delete_book_from_cache(key: str):
+    res = client.delete(key)
+    print(444, res)
+    return res
+
 async def create_book(request: schemas.BookSchema, db: Session):
-    book = models.Book(
+    books_from_db = models.Book(
         title=request.title,
         author=request.author,
         price=request.price,
         description=request.description,
     )
-    db.add(book)
+    db.add(books_from_db)
     db.commit()
-    db.refresh(book)
-
-    return book
+    db.refresh(books_from_db)
+    return books_from_db
 
 
 async def get_all_books(db: Session):
@@ -126,12 +131,12 @@ def edit_book(book_id: int, request: schemas.BookSchema, db: Session):
     return get_book
 
 
-def delete_book(book_id: int, db: Session):
+async def delete_book(book_id: int, db: Session):
     get_book = db.query(models.Book).get(book_id)
     if not get_book:
         raise HTTPException(status_code=404, detail=book_not_found)
 
     db.delete(get_book)
     db.commit()
-
+    await delete_book_from_cache(book_id)
     return get_book

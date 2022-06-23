@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Response
 from typing import List
 from sqlalchemy.orm import Session
 
@@ -36,6 +36,9 @@ def update_book(book_id: str, request: schemas.ShowBookSchema, db: Session = Dep
 
 
 # delete stats of a game
-@router.delete("/delete_book/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_stats_of_game(book_id: int, db: Session = Depends(get_db)):
-    return book.delete_book(book_id, db)
+@router.delete("/delete_book/{book_id}", status_code=status.HTTP_200_OK, )
+async def delete_stats_of_game(book_id: int, db: Session = Depends(get_db)):
+    await book.delete_book(book_id, db)
+    return {
+        "detail": "Book deleted Succesfully"
+    } 
