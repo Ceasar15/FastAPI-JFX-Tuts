@@ -50,7 +50,7 @@ async def set_book_in_cache(book: models.Book) -> bool:
         }
 
         data = json.dumps(data_dict)
-        cached_book = client.setex(book[_].id, 4, data)
+        cached_book = client.setex(book[_].id, 236, data)
     print("result from db")
     return cached_book
 
