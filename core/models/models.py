@@ -1,5 +1,4 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 from core.database.database import engine
@@ -18,7 +17,4 @@ class Book(Base):
     time_created = sa.Column(sa.DateTime(
         timezone=True), server_default=func.now())
 
-    # def __repr__(self):
-    #     return "title: {}, by author: {}".format(self.title, self.author)
-
-# Base.metadata.create_all(engine, Base.metadata.tables.values(),checkfirst=True)
+Base.metadata.create_all(engine, Base.metadata.tables.values(),checkfirst=True)
